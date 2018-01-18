@@ -13,10 +13,10 @@ logging.getLogger().setLevel(logging.DEBUG)
 # R environment variables before you can import rpy2
 # load R shared libraries from lib dir
 
-# for file in os.listdir('lib'):
-#     if os.path.isfile(os.path.join('lib', file)):
-#         ctypes.cdll.LoadLibrary(os.path.join('lib', file))
-#  
+for file in os.listdir('lib'):
+    if os.path.isfile(os.path.join('lib', file)):
+        ctypes.cdll.LoadLibrary(os.path.join('lib', file))
+ 
 # # set R environment variables
 os.environ["R_HOME"] = os.getcwd()
 os.environ["R_LIBS"] = os.path.join(os.getcwd(), 'site-library')
