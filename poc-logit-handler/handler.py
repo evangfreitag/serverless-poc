@@ -19,7 +19,7 @@ logging.getLogger().setLevel(logging.DEBUG)
  
 # # set R environment variables
 os.environ["R_HOME"] = os.getcwd()
-os.environ["R_LIBS"] = os.path.join(os.getcwd(), 'site-library')
+# os.environ["R_LIBS"] = os.path.join(os.getcwd(), 'site-library')
 
 # windows only
 # os.environ["R_USER"] = r'C:\Users\jaehyeon'
