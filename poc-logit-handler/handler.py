@@ -29,7 +29,7 @@ from rpy2 import robjects
 from rpy2.robjects import r
 ################## end of loading R
 
-BUCKET = 'serverless-poc-models'
+BUCKET = 'crowded-data-sci-1'
 KEY = 'admission.rds'
 s3 = boto3.client('s3')
 
