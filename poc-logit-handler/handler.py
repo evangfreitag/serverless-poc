@@ -21,58 +21,29 @@ for file in os.listdir('lib'):
 os.environ["R_HOME"] = os.getcwd()
 os.environ["R_LIBS"] = os.path.join(os.getcwd(), 'site-library')
 
-# windows only
-# os.environ["R_USER"] = r'C:\Users\jaehyeon'
-
 import rpy2
 from rpy2 import robjects
 from rpy2.robjects import r
 ################## end of loading R
 
-BUCKET = 'crowded-data-sci-1'
-KEY = 'admission.rds'
-s3 = boto3.client('s3')
-
-def get_file_path(key, name_only=True):
-    file_name = key.split('/')[len(key.split('/'))-1]
-    if name_only:
-        return file_name
-    else:
-        return '/tmp/' + file_name
-
-def download_file(bucket, key):
-    # caching strategies used to avoid the download of the model file every time from S3
-    file_name = get_file_path(key, name_only=True)
-    file_path = get_file_path(key, name_only=False)
-    if os.path.isfile(file_path):
-        logging.debug('{} already downloaded'.format(file_name))
-        return
-    else:
-        logging.debug('attempt to download model object to {}'.format(file_path))
-        try:
-            s3.download_file(bucket, key, file_path)
-        except Exception as e:
-            logging.error('error downloading key {} from bucket {}'.format(key, bucket))
-            logging.error(e)
-            raise e
-
-def pred_admit(gre, gpa, rnk, bucket=BUCKET, key=KEY):
-    download_file(bucket, key)
-    r.assign('gre', gre)
-    r.assign('gpa', gpa)
-    r.assign('rank', rnk)
-    mod_path = get_file_path(key, name_only=False)
-    r('fit <- readRDS("{}")'.format(mod_path))
-    r('newdata <- data.frame(gre=as.numeric(gre),gpa=as.numeric(gpa),rank=rank)')
-    r('pred <- predict(fit, newdata=newdata, type="response")')    
-    return robjects.r('pred')[0] > 0.5
+def pred_admit(aws_key, corp_id, file_name):
+	r('library(RJSONIO)')
+	r('library(lpSolve)')
+	r('library(stringr)')
+	r('library(textreuse)')
+	r('library(crowdedDedupeR2)')
+    r.assign('aws_key', aws_key)
+    r.assign('corp_id', corp_id)
+    r.assign('file_name', file_name)
+	r('pred <- dedupe_social_func(aws_key, corp_id, file_name)')
+    return robjects.r('pred')[0]
 
 def lambda_handler(event, context):
     try:
-        gre = event["gre"]
-        gpa = event["gpa"]
-        rnk = event["rank"]        
-        can_be_admitted = pred_admit(gre, gpa, rnk)
+        aws_key = event["aws_key"]
+        corp_id = event["corp_id"]
+        file_name = event["file_name"]        
+        can_be_admitted = pred_admit(aws_key, corp_id, file_name)
         res = {
             "httpStatus": 200,
             "headers": {
@@ -92,5 +63,3 @@ def lambda_handler(event, context):
             'message': e.message.replace('\n', ' ')
             }
         raise Exception(json.dumps(err))
-
-
