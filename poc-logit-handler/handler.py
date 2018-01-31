@@ -41,7 +41,7 @@ def lambda_handler(event, context):
     try:
         aws_key = event["aws_key"]
         corp_id = event["corp_id"]
-        file_name = event["file_name"]        
+        file_name = event["file_name"]
         can_be_admitted = pred_admit(aws_key, corp_id, file_name)
         res = {
             "httpStatus": 200,
@@ -54,11 +54,11 @@ def lambda_handler(event, context):
         return res
     except Exception as e:
         logging.error('Payload: {0}'.format(event))
-        logging.error('Error: {0}'.format(e.message))        
+        logging.error('Error: {0}'.format(e.message))
         err = {
             'errorType': type(e).__name__, 
-            'httpStatus': 400, 
-            'request_id': context.aws_request_id, 
+            'httpStatus': 400,
+            'request_id': context.aws_request_id,
             'message': e.message.replace('\n', ' ')
             }
         raise Exception(json.dumps(err))
