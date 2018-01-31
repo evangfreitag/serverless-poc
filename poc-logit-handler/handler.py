@@ -29,8 +29,7 @@ from rpy2.robjects import r
 def pred_admit(aws_key, corp_id, file_name):
     r('library(RJSONIO)')
     r('library(lpSolve)')
-    r('library(stringr)')
-    r('library(textreuse)')
+    r('library(stringdist)')
     r('library(crowdedDedupeR2)')
     r.assign('aws_key', aws_key)
     r.assign('corp_id', corp_id)
