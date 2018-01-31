@@ -12,7 +12,7 @@ class AdmitHandlerTest(unittest.TestCase):
         r('library(RJSONIO)')
         r('library(lpSolve)')
         r('library(stringdist)')
-        r('library(crowdedDedupeR2)')		
+        r('library(crowdedDedupeR2)')
         r.assign('aws_key', aws_key)
         r.assign('corp_id', corp_id)
         r.assign('file_name', file_name)
