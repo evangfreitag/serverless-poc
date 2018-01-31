@@ -13,11 +13,11 @@ class AdmitHandlerTest(unittest.TestCase):
         r('library(lpSolve)')
         r('library(stringdist)')
         r('library(crowdedDedupeR2)')		
-		r.assign('aws_key', aws_key)
-		r.assign('corp_id', corp_id)
-		r.assign('file_name', file_name)
-		r('pred <- dedupe_social_func(aws_key, corp_id, file_name)')
-		return robjects.r('pred')[0]
+        r.assign('aws_key', aws_key)
+        r.assign('corp_id', corp_id)
+        r.assign('file_name', file_name)
+        r('pred <- dedupe_social_func(aws_key, corp_id, file_name)')
+        return robjects.r('pred')[0]
 
 if __name__ == "__main__":
     unittest.main()
