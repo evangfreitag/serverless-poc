@@ -31,6 +31,7 @@ def pred_admit(aws_key, corp_id, file_name):
     r('library(lpSolve)')
     r('library(stringdist)')
     r('library(crowdedDedupeR2)')
+    r('library(jsonlite)')    
     r.assign('aws_key', aws_key)
     r.assign('corp_id', corp_id)
     r.assign('file_name', file_name)
