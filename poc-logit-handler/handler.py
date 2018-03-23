@@ -26,24 +26,20 @@ from rpy2 import robjects
 from rpy2.robjects import r
 ################## end of loading R
 
-def pred_admit(aws_key, corp_id, file_name):
+def pred_admit(data):
     r('library(RJSONIO)')
     r('library(lpSolve)')
     r('library(stringdist)')
     r('library(crowdedDedupeR2)')
     r('library(jsonlite)')    
-    r.assign('aws_key', aws_key)
-    r.assign('corp_id', corp_id)
-    r.assign('file_name', file_name)
+    r.assign('data', data)
     r('pred <- dedupe_social_func(aws_key, corp_id, file_name)')
     return robjects.r('pred')[0]
 
 def lambda_handler(event, context):
     try:
-        aws_key = event["aws_key"]
-        corp_id = event["corp_id"]
-        file_name = event["file_name"]
-        can_be_admitted = pred_admit(aws_key, corp_id, file_name)
+        data = event["data"]
+        can_be_admitted = pred_admit(data)
         res = {
             "httpStatus": 200,
             "headers": {
