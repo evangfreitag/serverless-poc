@@ -33,7 +33,7 @@ def pred_admit(data):
     r('library(crowdedDedupeR2)')
     r('library(jsonlite)')    
     r.assign('data', data)
-    r('pred <- dedupe_social_func(aws_key, corp_id, file_name)')
+    r('pred <- dedupe_social_func(data)')
     return robjects.r('pred')[0]
 
 def lambda_handler(event, context):
