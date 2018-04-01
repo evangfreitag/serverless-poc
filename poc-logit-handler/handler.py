@@ -39,7 +39,6 @@ def pred_admit(data):
 def lambda_handler(event, context):
     try:
         data = event["data"]
-        print data
         can_be_admitted = pred_admit(data)
         res = {
             "httpStatus": 200,
